@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Zbieracz danych</string>
+    <string name="button_add_person_name">Dodaj Osobe</string>
+    <string name="hint_first_name">Imie</string>
+    <string name="hint_surname">Nazwisko</string>
+    <string name="pick_date_birthday">Wybierz Date Urodzin</string>
+    <string name="button_next">Dalej</string>
+    <string name="button_exit">Wyjdz</string>
+    <string name="button_take_photo">Zrób Zdjęcie</string>
+    <string name="button_finish">Zatwierdz</string>
+    <string name="button_start_over">Zacznij Od Nowa</string>
+    <string name="main_activity_name">Imie:</string>
+    <string name="main_activity_surname">Nazwisko:</string>
+    <string name="main_activity_birthday">Data Urodzin:</string>
+    <string name="button_main_activity_to_language_change_activity">Język</string>
+    <string name="button_language_change_activity_polish">Polski</string>
+    <string name="button_language_change_activity_back">Cofnij</string>
+    <string name="button_language_change_activity_english">Angielski</string>
+</resources>

@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Data Collector</string>
+    <string name="button_add_person_name">Add Person</string>
+    <string name="hint_first_name">First Name</string>
+    <string name="hint_surname">Surname</string>
+    <string name="pick_date_birthday">Pick Birthday Date</string>
+    <string name="button_next">Next</string>
+    <string name="button_exit">Exit</string>
+    <string name="button_take_photo">Take Photo</string>
+    <string name="button_finish">Finish</string>
+    <string name="button_start_over">Start Over</string>
+    <string name="main_activity_name">Name:</string>
+    <string name="main_activity_surname">Surname:</string>
+    <string name="main_activity_birthday">Birthday date:</string>
+    <string name="button_main_activity_to_language_change_activity">Language</string>
+    <string name="button_language_change_activity_polish">Polish</string>
+    <string name="button_language_change_activity_back">Back</string>
+    <string name="button_language_change_activity_english">English</string>
+</resources>
