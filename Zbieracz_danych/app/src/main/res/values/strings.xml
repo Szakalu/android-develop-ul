@@ -16,4 +16,6 @@
     <string name="button_language_change_activity_polish">Polish</string>
     <string name="button_language_change_activity_back">Back</string>
     <string name="button_language_change_activity_english">English</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_edit">Edit</string>
 </resources>

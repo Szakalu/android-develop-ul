@@ -16,4 +16,6 @@
     <string name="button_language_change_activity_polish">Polski</string>
     <string name="button_language_change_activity_back">Cofnij</string>
     <string name="button_language_change_activity_english">Angielski</string>
+    <string name="button_delete">Delete</string>
+    <string name="button_edit">Edit</string>
 </resources>

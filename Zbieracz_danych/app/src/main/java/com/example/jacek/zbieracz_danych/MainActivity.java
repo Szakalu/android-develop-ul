@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity {
     }
     private void setButtonDelete(LinearLayout linearLayout, final Person person){
         final Button buttonDeletePerson = new Button(this);
-        buttonDeletePerson.setText("Delete");
+        buttonDeletePerson.setText(getString(R.string.button_delete));
         buttonDeletePerson.setWidth(300);
         linearLayout.addView(buttonDeletePerson);
         buttonDeletePerson.setOnClickListener(new View.OnClickListener() {
@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setButtonEdit(LinearLayout linearLayout, final Person person){
         final Button buttonEditPerson = new Button(this);
-        buttonEditPerson.setText("Edit");
+        buttonEditPerson.setText(getString(R.string.button_edit));
         buttonEditPerson.setWidth(300);
         linearLayout.addView(buttonEditPerson);;
         buttonEditPerson.setOnClickListener(new View.OnClickListener() {
