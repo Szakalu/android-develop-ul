@@ -11,7 +11,11 @@ import java.util.Locale;
 
 public class LanguageChangeActivity extends AppCompatActivity {
 
+    private final static String SAVE_CURRENT_LANGUAGE = "saved_current_language";
+
     String language;
+
+    private String currentLanguage;
 
     Button buttonPolish;
     Button buttonBack;
@@ -24,6 +28,7 @@ public class LanguageChangeActivity extends AppCompatActivity {
         buttonPolish = (Button) findViewById(R.id.buttonPolish);
         buttonBack = (Button) findViewById(R.id.buttonBackToMainActivity);
         buttonEnglish = (Button) findViewById(R.id.buttonEnglish);
+        currentLanguage = Locale.getDefault().getDisplayLanguage();
     }
 
     public void clickChangeLanguageToPolish(View view) {
@@ -32,14 +37,16 @@ public class LanguageChangeActivity extends AppCompatActivity {
         buttonPolish.setText(getString(R.string.button_language_change_activity_polish));
         buttonBack.setText(getString(R.string.button_language_change_activity_back));
         buttonEnglish.setText(getString(R.string.button_language_change_activity_english));
+        currentLanguage = Locale.getDefault().getDisplayLanguage();
     }
 
     public void clickChangeLanguageToEnglish(View view) {
-        language = "default";
+        language = "en";
         updateLocale();
         buttonPolish.setText(getString(R.string.button_language_change_activity_polish));
         buttonBack.setText(getString(R.string.button_language_change_activity_back));
         buttonEnglish.setText(getString(R.string.button_language_change_activity_english));
+        currentLanguage = Locale.getDefault().getDisplayLanguage();
     }
 
     private void updateLocale()
@@ -55,5 +62,24 @@ public class LanguageChangeActivity extends AppCompatActivity {
         Intent intentMainActivity = new Intent(this,MainActivity.class);
         startActivity(intentMainActivity);
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SAVE_CURRENT_LANGUAGE,currentLanguage);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        currentLanguage = savedInstanceState.getString(SAVE_CURRENT_LANGUAGE);
+        if(currentLanguage.equals("polski")){
+            language = "pl";
+            updateLocale();
+        }
+        buttonPolish.setText(getString(R.string.button_language_change_activity_polish));
+        buttonBack.setText(getString(R.string.button_language_change_activity_back));
+        buttonEnglish.setText(getString(R.string.button_language_change_activity_english));
+        super.onRestoreInstanceState(savedInstanceState);
     }
 }

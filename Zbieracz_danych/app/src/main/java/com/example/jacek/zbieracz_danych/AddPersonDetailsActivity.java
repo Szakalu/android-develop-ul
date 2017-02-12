@@ -2,15 +2,18 @@ package com.example.jacek.zbieracz_danych;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddPersonDetailsActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -30,6 +33,7 @@ public class AddPersonDetailsActivity extends AppCompatActivity implements DateP
     private final static String SAVE_PICKED_YEAR = "saved_picked_year";
     private final static String SAVE_PICKED_MONTH = "saved_picked_month";
     private final static String SAVE_PICKED_DAY = "saved_picked_day";
+    private final static String SAVE_CURRENT_LANGUAGE = "saved_current_language";
 
     private final static String INFO_WHAT_TO_DO = "info_what_to_do";
     private final static String EDIT_ID = "edit_id";
@@ -37,7 +41,13 @@ public class AddPersonDetailsActivity extends AppCompatActivity implements DateP
     private final static String EDIT_SURNAME = "edit_surname";
     private final static String EDIT_BIRTHDAY = "edit_birthday";
     private final static String EDIT_PHOTO_PATH = "edit_photo_path";
-    Intent intentMainActivity;
+    private Intent intentMainActivity;
+
+    private String language;
+
+    private Button buttonExit;
+    private Button buttonNext;
+    private Button buttonPickDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +59,8 @@ public class AddPersonDetailsActivity extends AppCompatActivity implements DateP
         setCurrentlyDate();
         intentMainActivity = getIntent();
         checkIfEditPerson(intentMainActivity);
+        language = Locale.getDefault().getDisplayLanguage();
+        setButtons();
     }
 
     private void checkIfEditPerson(Intent intentMainActivity){
@@ -223,6 +235,7 @@ public class AddPersonDetailsActivity extends AppCompatActivity implements DateP
         outState.putInt(SAVE_PICKED_YEAR,pickedYear);
         outState.putInt(SAVE_PICKED_MONTH,pickedMonth);
         outState.putInt(SAVE_PICKED_DAY,pickedDay);
+        outState.putString(SAVE_CURRENT_LANGUAGE,language);
         super.onSaveInstanceState(outState);
     }
 
@@ -234,6 +247,34 @@ public class AddPersonDetailsActivity extends AppCompatActivity implements DateP
         pickedYear = savedInstanceState.getInt(SAVE_PICKED_YEAR);
         pickedMonth = savedInstanceState.getInt(SAVE_PICKED_MONTH);
         pickedDay = savedInstanceState.getInt(SAVE_PICKED_DAY);
+        language = savedInstanceState.getString(SAVE_CURRENT_LANGUAGE);
+        if(language.equals("polski")){
+            updateLocale("pl");
+        }
+        setLanguage();
         super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void setLanguage(){
+        buttonNext.setText(getString(R.string.button_next));
+        buttonExit.setText(getString(R.string.button_exit));
+        buttonPickDate.setText(getString(R.string.pick_date_birthday));
+        editTextName.setHint(getString(R.string.hint_first_name));
+        editTextSurname.setHint(getString(R.string.hint_surname));
+    }
+
+    private void setButtons(){
+        buttonNext = (Button) findViewById(R.id.buttonNext);
+        buttonExit = (Button) findViewById(R.id.buttonExit);
+        buttonPickDate = (Button) findViewById(R.id.buttonPickDate);
+    }
+
+    private void updateLocale(String country)
+    {
+        Locale locale=new Locale(country);
+        Locale.setDefault(locale);
+        Configuration config=new Configuration();
+        config.locale=locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 }

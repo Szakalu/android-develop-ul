@@ -1,6 +1,7 @@
 package com.example.jacek.zbieracz_danych;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Locale;
 
 public class SummaryActivity extends AppCompatActivity {
 
@@ -27,12 +29,18 @@ public class SummaryActivity extends AppCompatActivity {
     final static String EXTRA_SURNAME = "extra_surname";
     final static String EXTRA_BIRTHDAY_DATE = "extra_birthday_date";
     final static String EXTRA_PHOTO_ABSOLUTE_PATH = "extra_photo_absolute_path";
+    private final static String SAVE_CURRENT_LANGUAGE = "saved_current_language";
     private final static String INFO_WHAT_TO_DO = "info_what_to_do";
     private final static String EDIT_ID = "edit_id";
     private final static String EDIT_PHOTO_PATH = "edit_photo_path";
-    String photoAbsolutePath;
-    Button buttonStartOver;
-    Intent intentAddPersonPhoto;
+    private String photoAbsolutePath;
+    private Button buttonStartOver;
+    private Button buttonFinish;
+    private Button buttonExit;
+
+    private Intent intentAddPersonPhoto;
+
+    private String language;
 
 
     @Override
@@ -54,6 +62,9 @@ public class SummaryActivity extends AppCompatActivity {
         if(intentAddPersonPhoto.getStringExtra(INFO_WHAT_TO_DO).equals("EDIT")){
             buttonStartOver.setEnabled(false);
         }
+
+        language = Locale.getDefault().getDisplayLanguage();
+        setButtons();
     }
     public void startOver(View view){
         Intent intentAddPersonDetails = new Intent(this,AddPersonDetailsActivity.class);
@@ -137,5 +148,41 @@ public class SummaryActivity extends AppCompatActivity {
             return  deviceWidth;
         }
         return deviceHeight;
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SAVE_CURRENT_LANGUAGE,language);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        language = savedInstanceState.getString(SAVE_CURRENT_LANGUAGE);
+        if(language.equals("polski")){
+            updateLocale("pl");
+        }
+        setLanguage();
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void setLanguage(){
+        buttonFinish.setText(getString(R.string.button_finish));
+        buttonExit.setText(getString(R.string.button_exit));
+        buttonStartOver.setText(getString(R.string.button_start_over));
+    }
+
+    private void setButtons(){
+        buttonFinish = (Button) findViewById(R.id.buttonFinish);
+        buttonExit = (Button) findViewById(R.id.buttonExit);
+    }
+
+    private void updateLocale(String country)
+    {
+        Locale locale=new Locale(country);
+        Locale.setDefault(locale);
+        Configuration config=new Configuration();
+        config.locale=locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 }

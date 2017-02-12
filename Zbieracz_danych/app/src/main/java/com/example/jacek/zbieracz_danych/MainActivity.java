@@ -1,6 +1,7 @@
 package com.example.jacek.zbieracz_danych;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -31,6 +33,12 @@ public class MainActivity extends AppCompatActivity {
     private final static String EDIT_SURNAME = "edit_surname";
     private final static String EDIT_BIRTHDAY = "edit_birthday";
     private final static String EDIT_PHOTO_PATH = "edit_photo_path";
+    private final static String SAVE_CURRENT_LANGUAGE = "saved_current_language";
+
+    private String language;
+
+    private Button buttonLanguage;
+    private Button buttonAddPerson;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         linearLayoutPeople = (LinearLayout) findViewById(R.id.linearLayoutPeople);
         linearLayoutPeople.setOrientation(LinearLayout.VERTICAL);
+        language = Locale.getDefault().getDisplayLanguage();
+        setButtons();
     }
 
     public void clearPeopleList(){
@@ -80,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             textViewDetails.setText( getString(R.string.main_activity_name) + " " + person.getName() +
                     "\n" + getString(R.string.main_activity_surname) + " " + person.getSurname() +
                     "\n" + getString(R.string.main_activity_birthday) + " " + person.getBirthDayDate());
-            Log.i("PhotoPath",person.getPhotoPath());
             textViewDetails.setMinimumWidth(400);
             firstLinearLayout.addView(textViewDetails);
 
@@ -170,5 +179,41 @@ public class MainActivity extends AppCompatActivity {
         Intent intentChangeLanguageActivity = new Intent(this,LanguageChangeActivity.class);
         startActivity(intentChangeLanguageActivity);
         finish();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putString(SAVE_CURRENT_LANGUAGE,language);
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        language = savedInstanceState.getString(SAVE_CURRENT_LANGUAGE);
+        if(language.equals("polski")){
+            Log.i("Language",language);
+            updateLocale("pl");
+        }
+        setLanguage();
+        super.onRestoreInstanceState(savedInstanceState);
+    }
+
+    private void setLanguage(){
+        buttonLanguage.setText(getString(R.string.button_main_activity_to_language_change_activity));
+        buttonAddPerson.setText(getString(R.string.button_add_person_name));
+    }
+
+    private void setButtons(){
+        buttonLanguage = (Button) findViewById(R.id.buttonLanguage);
+        buttonAddPerson = (Button) findViewById(R.id.button_add_person);
+    }
+
+    private void updateLocale(String country)
+    {
+        Locale locale=new Locale(country);
+        Locale.setDefault(locale);
+        Configuration config=new Configuration();
+        config.locale=locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 }

@@ -37,5 +37,5 @@
         android:layout_alignEnd="@+id/buttonPolish"
         android:layout_marginTop="41dp"
         android:id="@+id/buttonEnglish"
-        android:onClick="clickChangeLanguageToEnglish (LanguageChangeActivity)" />
+        android:onClick="clickChangeLanguageToEnglish" />
 </RelativeLayout>

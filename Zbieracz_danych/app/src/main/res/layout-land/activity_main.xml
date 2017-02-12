@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:id="@+id/languageButton"
+        android:id="@+id/buttonLanguage"
         android:onClick="toChangeLanguageActivity" />
 
 </RelativeLayout>

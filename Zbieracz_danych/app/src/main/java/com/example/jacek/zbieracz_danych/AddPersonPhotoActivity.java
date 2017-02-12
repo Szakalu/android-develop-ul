@@ -1,6 +1,7 @@
 package com.example.jacek.zbieracz_danych;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
@@ -13,11 +14,13 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class AddPersonPhotoActivity extends AppCompatActivity {
 
@@ -28,12 +31,19 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
     final static String EXTRA_BIRTHDAY_DATE = "extra_birthday_date";
     final static String EXTRA_PHOTO_ABSOLUTE_PATH = "extra_photo_absolute_path";
     final static String SAVE_PHOTO_ABSOLUTE_PATH = "save_photo_absolute_path";
+    private final static String SAVE_CURRENT_LANGUAGE = "saved_current_language";
     private String photoAbsolutePath = "";
     private String oldPhotoAbsolutePath = "";
     private final static String INFO_WHAT_TO_DO = "info_what_to_do";
     private final static String EDIT_ID = "edit_id";
     private final static String EDIT_PHOTO_PATH = "edit_photo_path";
     Intent intentEditAddPersonDetails;
+
+    private String language;
+
+    private Button buttonNext;
+    private Button buttonExit;
+    private Button buttonTakePhoto;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +57,8 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
             oldPhotoAbsolutePath = photoAbsolutePath;
             showPicture();
         }
+        language = Locale.getDefault().getDisplayLanguage();
+        setButtons();
     }
 
 
@@ -91,7 +103,6 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
             checkIfOldPhotoPathExist();
             Log.i("Photo","canceled");
         }
-
     }
 
     private void checkIfOldPhotoPathExist(){
@@ -182,6 +193,7 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         outState.putString(SAVE_PHOTO_ABSOLUTE_PATH, photoAbsolutePath);
+        outState.putString(SAVE_CURRENT_LANGUAGE,language);
         super.onSaveInstanceState(outState);
 
     }
@@ -194,6 +206,11 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        language = savedInstanceState.getString(SAVE_CURRENT_LANGUAGE);
+        if(language.equals("polski")){
+            updateLocale("pl");
+        }
+        setLanguage();
         super.onRestoreInstanceState(savedInstanceState);
     }
 
@@ -204,6 +221,27 @@ public class AddPersonPhotoActivity extends AppCompatActivity {
             return  displayMetrics.widthPixels;
         }
         return displayMetrics.heightPixels;
+    }
+
+    private void setLanguage(){
+        buttonNext.setText(getString(R.string.button_next));
+        buttonExit.setText(getString(R.string.button_exit));
+        buttonTakePhoto.setText(getString(R.string.button_take_photo));
+    }
+
+    private void setButtons(){
+        buttonNext = (Button) findViewById(R.id.buttonNextSummary);
+        buttonExit = (Button) findViewById(R.id.buttonExit);
+        buttonTakePhoto = (Button) findViewById(R.id.buttonTakePhoto);
+    }
+
+    private void updateLocale(String country)
+    {
+        Locale locale=new Locale(country);
+        Locale.setDefault(locale);
+        Configuration config=new Configuration();
+        config.locale=locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
 }
